@@ -2,12 +2,38 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>SalesAppAngular</title>
-  <base href="/">
+  <title>سامانه فروش گل گهر</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script>
+    AOS.init();
+  </script>
 </head>
 <body>
-  <app-root></app-root>
+  <!-- HEADER -->
+  <header id="header" class="d-flex align-items-center">
+    <div class="container d-flex align-items-center justify-content-between">
+      <h1 class="logo"><a>Logo</a></h1>
+
+      <nav class="navbar" id="navbar">
+        <ul class="d-flex align-items-center">
+          <li><a class="nav-link active">مشتری ها</a></li>
+          <li><a class="nav-link">قرارداد ها</a></li>
+          <li><a class="nav-link">حمل و نقل</a></li>
+          <li><a class="nav-link">انبار ها</a></li>
+          <li><a class="nav-link">تولیدات</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <!-- Welcome Section -->
+    <section id="welcome" class="d-flex align-items-center">
+      <div class="container position-relative" data-aos="fade" data-aos-delay="500ms">
+        <h1>به وبسایت فروش گل گهر خوش آمدید</h1>
+        <h2>این وبسایت فروش و همچنین پیگیری سفارشات معدن گل گهر را برعهده دارد</h2>
+      </div>
+    </section>
+    <app-root></app-root>
+  </main>
 </body>
 </html>

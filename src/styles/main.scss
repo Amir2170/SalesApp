@@ -1,0 +1,18 @@
+﻿// bootstrap
+@import "bootstrap/dist/css/bootstrap.css";
+@import "bootstrap/dist/css/bootstrap.min.css";
+
+@import "./abstracts/variables";
+
+@import "./base/base";
+
+@import "./abstracts/animations";
+
+// layouts
+@import "./layout/header";
+@import "./layout/footer";
+
+// pages
+@import "./pages/home";
+
+

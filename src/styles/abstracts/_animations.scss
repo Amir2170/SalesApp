@@ -1,0 +1,12 @@
+﻿
+// left to right ease in
+@mixin left-ease-in-before {
+  transform-origin: right;
+  transform: scaleX(0);
+  transition: transform .3s ease-in-out;
+}
+
+@mixin left-ease-in {
+  transform-origin: left;
+  transform: scaleX(1);
+}

@@ -1,0 +1,54 @@
+﻿#header {
+  background-color: $colour-dark-grey;
+  color: $colour-white;
+  transition: all 0.5s;
+  height: 70px;
+}
+
+.navbar ul li {
+  list-style: none;
+}
+
+#header .logo {
+  line-height: 1;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#header .container {
+  max-width: 1400px;
+}
+
+.navbar ul {
+  margin-bottom: 3px;
+}
+
+.navbar a,
+.navbar a:focus{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  white-space: nowrap;
+  transition: 0.3s;
+  color: $colour-white;
+  margin-right: 3px;
+}
+
+.navbar a {
+  padding: 25px;
+}
+
+.navbar a:hover,
+.navbar .active,
+.navbar .active:focus,
+.navbar li:hover>a {
+  background: $colour-red;
+  cursor: pointer;
+}
+
+.navbar a:active {
+  color: $colour-black;
+}
+
