@@ -8,6 +8,10 @@
 
 @import "./abstracts/animations";
 
+// components
+@import "components/table";
+@import "components/form";
+
 // layouts
 @import "./layout/header";
 @import "./layout/footer";

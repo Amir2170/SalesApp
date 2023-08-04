@@ -1,1 +1,12 @@
-﻿
+﻿* {
+  direction: rtl;
+}
+
+// aligning table texts in center
+table {
+  text-align: center;
+}
+
+body {
+  background-color: $colour-background;
+}

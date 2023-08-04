@@ -1,11 +1,11 @@
 ﻿#welcome {
   direction: rtl;
   width: 100%;
-  height: calc(100vh - 110px);
+  height: 85vh;
   background: url("/../assets/building.jpg") top center;
   color: $colour-white;
 }
 
-#welcome h1, #welcome h2 {
-  text-align: start;
+#welcome h1, #welcome h3 {
+  text-align: center;
 }

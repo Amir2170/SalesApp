@@ -1,0 +1,27 @@
+<!-- HEADER -->
+<header id="header" class="d-flex align-items-center">
+  <div class="container d-flex align-items-center justify-content-between">
+    <nav class="navbar" id="navbar">
+      <ul class="d-flex align-items-center">
+        <!-- using selectNavItem and ngClass to toggle active class -->
+        <li><a class="nav-link" routerLink="/home"
+               [ngClass]="clicked === 6 ? 'active' : '' " (click)="selectNavItem(6)">خانه</a></li>
+        <li><a class="nav-link" routerLink="/productions"
+               [ngClass]="clicked === 1 ? 'active' : ''" (click)="selectNavItem(1)">مشتری ها</a></li>
+        <li><a class="nav-link"
+               [ngClass]="clicked === 2  ? 'active': ''" (click)="selectNavItem(2)">قرارداد ها</a></li>
+        <li><a class="nav-link"
+               [ngClass]="clicked === 3 ? 'active' : '' " (click)="selectNavItem(3)">حمل و نقل</a></li>
+        <li><a class="nav-link"
+               [ngClass]="clicked === 4 ? 'active' : '' "  (click)="selectNavItem(4)">انبار ها</a></li>
+        <li><a class="nav-link"
+               [ngClass]="clicked === 5 ? 'active' : '' " (click)="selectNavItem(5)">تولیدات</a></li>
+      </ul>
+    </nav>
+
+    <h1 class="logo"><a>Logo</a></h1>
+  </div>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>

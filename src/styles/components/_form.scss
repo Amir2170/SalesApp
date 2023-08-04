@@ -1,0 +1,13 @@
+form {
+  text-align: end;
+}
+
+.hide-form {
+  display: none;
+  @include ease-in-out;
+}
+
+.show-form {
+  display: block;
+  @include ease-in-out;
+}
