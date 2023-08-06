@@ -30,4 +30,7 @@ export class ProductionsService {
 
   // POST: /productions
   // send post request to create a new customer
+  createProductions(production: Production): Observable<Production> {
+    return this.http.post<Production>(this.productionsUrl, production, this.httpOptions);
+  }
 }
