@@ -1,5 +1,22 @@
-<div class="alert alert-danger alert-positioning" role="alert" [@showHideError]="hideMessage ? 'closed' : 'open'">
+<!-- backend error messages -->
+<div class="alert alert-danger alert-positioning" role="alert" [@showHideError]="unsuccessfulCreation ? 'open' : 'closed'">
   {{ errorMessage }}
+  <button type="button" class="close ml-3" (click)="hideMessageFunc()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- successful creation message-->
+<div class="alert alert-success alert-positioning" role="alert" [@showHideError]="successfulCreation ? 'open' : 'closed'">
+  محصول مورد نظر با موفقیت ثبت شد
+  <button type="button" class="close ml-3" (click)="hideMessageFunc()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<!-- successful delete message-->
+<div class="alert alert-success alert-positioning" role="alert" [@showHideError]="isDeleted ? 'open' : 'closed'">
+  محصول مورد نظر با موفقیت حذف شد
   <button type="button" class="close ml-3" (click)="hideMessageFunc()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -89,7 +106,7 @@
         <td>{{ production.code }}</td>
         <td> {{ production.warehouseId }}</td>
         <td><button class="btn btn-primary">ویرایش</button></td>
-        <td><button class="btn btn-danger">حذف</button></td>
+        <td><button class="btn btn-danger" (click)="deleteProduction(production.id)">حذف</button></td>
     </tr>
     </tbody>
   </table>

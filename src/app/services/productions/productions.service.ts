@@ -39,6 +39,15 @@ export class ProductionsService {
       )
   }
 
+  //DELETE: productions/id
+  // request to delete selected production
+  deleteProduction(id: number): Observable<Production> {
+    return this.http.delete<Production>(`${this.productionsUrl}/${id}`);
+      /*.pipe(
+        catchError(this.handleError<Production>())
+      )*/
+  }
+
   // handle error function
   private handleError<T>(operation = '', result?: T) {
     // return an observable function
@@ -59,7 +68,7 @@ export class ProductionsService {
         console.error(error);
 
         // return a type to application works normally after error
-        return of(result as T);
+        return of(this.errorMessage as T);
       }
   }
 }
