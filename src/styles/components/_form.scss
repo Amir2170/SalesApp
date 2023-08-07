@@ -11,3 +11,22 @@ form {
   display: block;
   @include ease-in-out;
 }
+
+.validation-error {
+  position: absolute;
+  right: 300px;
+  top: 0;
+  height: 40px;
+  min-width: 200px;
+  padding: 0;
+  text-align: center;
+}
+
+.validation-error-text {
+  line-height: 2;
+}
+
+// because label is big this one is exception
+.strategic-error {
+  right: 270px !important;
+}

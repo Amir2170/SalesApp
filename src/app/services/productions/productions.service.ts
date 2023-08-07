@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { catchError, tap } from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {Observable, of} from "rxjs";
+import { catchError, map } from "rxjs";
 
 // local imports
 import { Production } from "../../models/production";
+import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductionsService {
+  errorMessage = '';
 
   // url for productions on server
   private productionsUrl: string = "https://localhost:44318/productions"
@@ -31,6 +33,33 @@ export class ProductionsService {
   // POST: /productions
   // send post request to create a new customer
   createProductions(production: Production): Observable<Production> {
-    return this.http.post<Production>(this.productionsUrl, production, this.httpOptions);
+    return this.http.post<Production>(this.productionsUrl, production, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Production>())
+      )
+  }
+
+  // handle error function
+  private handleError<T>(operation = '', result?: T) {
+    // return an observable function
+    return (error: HttpErrorResponse ) : Observable<T> => {
+      // check if error status is 400 and if error from backend exists
+        if (error.status === 400) {
+          // if error from backend exists show error
+          if (error.error.message) {
+            this.errorMessage = error.error.message;
+          }
+        }
+        else if(error.status === 404) {
+          if (error.error.message) {
+            this.errorMessage = error.error.message;
+          }
+        }
+        // otherwise print error on console
+        console.error(error);
+
+        // return a type to application works normally after error
+        return of(result as T);
+      }
   }
 }
