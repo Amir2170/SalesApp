@@ -6,6 +6,7 @@ import { Validators } from "@angular/forms";
 import { Production } from "../models/production";
 import { ProductionsService } from "../services/productions/productions.service";
 import {triggerOpenCloseForm, triggerShowHideError} from "../../animations/animations";
+import {first} from "rxjs";
 
 
 @Component({
@@ -19,8 +20,14 @@ import {triggerOpenCloseForm, triggerShowHideError} from "../../animations/anima
   ]
 })
 export class ProductionsComponent implements OnInit {
-  // variable to use in showing or hiding customer create form
+  // variable to use in showing or hiding production create form
   showCreateForm: boolean = false;
+
+  // production to edit id
+  editId: number = 0;
+
+  // // variable to use in showing or hiding production edit form
+  showEditForm: boolean = false;
 
   // variable to pass error messages to view
   errorMessage = '';
@@ -37,11 +44,19 @@ export class ProductionsComponent implements OnInit {
   // array of productions to use in views
   productions: Production[] = [];
 
-  // production form
+  // production and production edit form
   productionForm: any;
 
-  // injecting service
-  constructor(private productionService: ProductionsService) {
+  // successful production edition
+  successfulEdit: boolean = false;
+
+  // unsuccessful production creation
+  unsuccessfulEdit: boolean = false;
+
+  // injecting service and router to extract id
+  constructor(
+    private productionService: ProductionsService,
+  ) {
   }
 
   /* calling getProductions on ngOnInit to get all productions
@@ -76,13 +91,40 @@ export class ProductionsComponent implements OnInit {
 
   /* setting toggling create customer form on click */
   showCreateFormFunc() {
+    this.showEditForm = false;
     this.showCreateForm = !this.showCreateForm;
+
+    // empty form if edition has been done before it
+    this.productionForm.patchValue({
+      title: '',
+      code: '',
+      strategicResource: 0,
+      warehouseId: 0,
+    });
   }
 
-  /* hide messages when button is clicked */
+  /* setting toggling edit production form on click */
+  showEditFormFunc(id: number) {
+    // set editId to use in edit request
+    this.editId = id;
+
+    // close create form and populate edit form with production values
+    this.showCreateForm = false;
+    this.showEditForm= !this.showEditForm;
+    this.productionService.getProductionById(id)
+      .pipe(first())
+      .subscribe(
+        pro =>
+          this.productionForm.patchValue(pro)
+      )
+  }
+
+  /* hide all messages when button is clicked */
   hideMessageFunc() {
     this.unsuccessfulCreation = false;
     this.successfulCreation = false;
+    this.unsuccessfulEdit = false;
+    this.successfulEdit = false;
     this.isDeleted = false
   }
 
@@ -90,10 +132,6 @@ export class ProductionsComponent implements OnInit {
   showIsDeletedMessage() {
     // first show the message then hide it
     this.isDeleted = true;
-
-    setTimeout(() => {
-      this.isDeleted = false;
-    }, 3000);
   }
 
   /* ------------------------------------------------------- */
@@ -128,12 +166,16 @@ export class ProductionsComponent implements OnInit {
           if(data) {
             // set appropriate variables in each case
             // set just variable that indicates operation true all others false
+            this.successfulEdit = false;
+            this.unsuccessfulEdit = false;
             this.isDeleted = false;
             this.successfulCreation = false;
             this.unsuccessfulCreation = true;
             this.errorMessage = this.productionService.errorMessage;
           } else {
             this.isDeleted = false;
+            this.successfulEdit = false;
+            this.unsuccessfulEdit = false;
             this.unsuccessfulCreation = false;
             this.successfulCreation = true;
             // clear error message
@@ -144,6 +186,8 @@ export class ProductionsComponent implements OnInit {
       // show this error in case form is invalid and error message is empty
       this.errorMessage = "فرم ثبت نشد. از پر بودن فیلد ها اطمینان حاصل کنید و مجدد تلاش کنید";
       this.unsuccessfulCreation = true;
+      this.unsuccessfulEdit = false;
+      this.successfulEdit = false;
       this.successfulCreation = false;
       this.isDeleted = false
     }
@@ -159,10 +203,61 @@ export class ProductionsComponent implements OnInit {
         // show delete successful
         this.isDeleted = true;
 
-        // set all other variables to false to show this message
+        // set all other variables false to show this message
         this.successfulCreation = false;
         this.unsuccessfulCreation = false
+        this.successfulEdit = false;
+        this.unsuccessfulEdit = false;
       })
+
+  }
+
+  // PUT: productions/{{id}}
+  // update a product with given id to product in request body
+  updateProduction() {
+
+    if (this.productionForm.valid) {
+      this.productionService.updateProduction(this.editId, {
+        // title and code with no white space on either side
+        title: this.productionForm.get('title')?.value?.trim(),
+        code: this.productionForm.get('code')?.value?.trim(),
+        strategicResource: this.productionForm.get('strategicResource')?.value,
+        warehouseId: this.productionForm.get('warehouseId')?.value,
+        id: this.editId
+      } as Production)
+        .subscribe( (data) => {
+          // get all products
+          this.getProductions();
+
+          // data is error send from handle error function in service as Observable
+          if(data) {
+            // set appropriate variables in each case
+            // set just variable that indicates operation true all others false
+            this.isDeleted = false;
+            this.successfulCreation = false;
+            this.unsuccessfulCreation = false;
+            this.unsuccessfulEdit = true;
+            this.successfulEdit = false;
+            this.errorMessage = this.productionService.errorMessage;
+          } else {
+            this.successfulEdit = true;
+            this.unsuccessfulEdit = false;
+            this.isDeleted = false;
+            this.unsuccessfulCreation = false;
+            this.successfulCreation = false;
+            // clear error message
+            this.errorMessage = '';
+          }
+        });
+    } else {
+      // show this error in case form is invalid and error message is empty
+      this.errorMessage = "فرم ثبت نشد. از پر بودن فیلد ها اطمینان حاصل کنید و مجدد تلاش کنید";
+      this.unsuccessfulCreation = false;
+      this.unsuccessfulEdit = true;
+      this.successfulEdit = false;
+      this.successfulCreation = false;
+      this.isDeleted = false
+    }
   }
 }
 

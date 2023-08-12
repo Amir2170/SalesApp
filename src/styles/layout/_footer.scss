@@ -1,44 +1,18 @@
-﻿.footer-container {
-  font-size: 1.1rem;
-  display: flex;
-  width: 99%;
-  flex-direction: row;
-  position: absolute;
-  bottom: 1vh;
-  justify-content: space-between;
-  padding: 3vh 7vw 0.2vh 7vw;
-  border-top: 2px solid $colour-dark-grey;
-}
-
-// links animations and styles
-
-.footer-container a {
-  text-decoration: none;
-  position: relative;
-  cursor: pointer;
-}
-
-.footer-container a::before {
-  content: '';
-  position: absolute;
-  width: 100%;
-  height: 4px;
-  border-radius: 4px;
-  background-color: $colour-black;
-  bottom: -1vh;
-  left: 0;
-  @include left-ease-in-before;
-}
-
-.footer-container a:hover::before {
-  @include left-ease-in;
-}
-
-
-.footer-container a:active {
-  color: $colour-dark-grey;
-}
-
-.footer-container a:active::before {
+﻿footer {
   background-color: $colour-dark-grey;
+  color: $colour-white;
+  width: 100%;
+  height: 44px;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer ul li {
+  margin: 4px 40px 0 40px;
+}
+
+footer img {
+  scale: 0.1;
 }

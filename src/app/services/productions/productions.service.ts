@@ -48,6 +48,24 @@ export class ProductionsService {
       )*/
   }
 
+  // PUT: productions/id
+  // request to update a production with object in body
+  updateProduction(id: number, production: Production): Observable<Production>{
+    return this.http.put<Production>(`${this.productionsUrl}/${id}`, production, this.httpOptions)
+      .pipe(
+        catchError(this.handleError<Production>())
+      );
+  }
+
+  // GET: productions.id
+  // get production by id
+  getProductionById(id: number): Observable<Production>{
+    return this.http.get<Production>(`${this.productionsUrl}/${id}`)
+      .pipe(
+        catchError(this.handleError<Production>())
+      );
+  }
+
   // handle error function
   private handleError<T>(operation = '', result?: T) {
     // return an observable function
