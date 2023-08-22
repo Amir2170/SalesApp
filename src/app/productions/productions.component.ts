@@ -20,6 +20,9 @@ import {first} from "rxjs";
   ]
 })
 export class ProductionsComponent implements OnInit {
+  // columns to display in template
+  columnsToDisplay= ['id', 'title', 'strategicResource', 'code', 'warehouseId']
+
   // variable to use in showing or hiding production create form
   showCreateForm: boolean = false;
 

@@ -1,4 +1,10 @@
-﻿// bootstrap
+﻿// fonts
+@import "base/fonts";
+
+// themes
+@import "themes/app_theme";
+
+// bootstrap
 @import "bootstrap/dist/css/bootstrap.css";
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap/dist/css/bootstrap-grid.css";
@@ -23,5 +29,4 @@
 
 // pages
 @import "./pages/home";
-
 

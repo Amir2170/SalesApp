@@ -3,6 +3,10 @@ import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from "@angular/forms";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 
+// angular materials
+import {MatButtonModule} from '@angular/material/button';
+import {MatTableModule} from "@angular/material/table";
+
 // local imports
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -22,6 +26,8 @@ import { ProductionsComponent } from './productions/productions.component';
     HttpClientModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatButtonModule,
+    MatTableModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

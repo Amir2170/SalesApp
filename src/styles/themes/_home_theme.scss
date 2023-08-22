@@ -1,0 +1,53 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+
+@mixin color($theme) {
+  // get colour config from theme
+  $color-config: mat.get-color-config($theme);
+
+  // get primary color palette from config
+  $primary-palette: map.get($color-config, 'primary');
+
+  // body white background color
+  html, body, main {
+    background-color: mat.get-color-from-palette($primary-palette, 50);
+  }
+  /* **********************HEADER***************** */
+  #header {
+    background-color: mat.get-color-from-palette($primary-palette, 800)
+
+  }
+
+  .navbar a,
+  .navbar a:focus {
+    color: mat.get-color-from-palette($primary-palette, 50)
+  }
+
+  .navbar a:hover,
+  .navbar .active,
+  .navbar .active:focus,
+  .navbar li:hover>a {
+    background-color: mat.get-color-from-palette($primary-palette, 500);
+  }
+
+  .navbar a:active {
+    color: mat.get-color-from-palette($primary-palette, 900);
+  }
+
+  /* *************************FOOTER************************* */
+  footer {
+    background-color: mat.get-color-from-palette($primary-palette, 800);
+    color: mat.get-color-from-palette($primary-palette, 50);
+  }
+}
+
+@mixin typography($theme) {
+
+  // get typography config
+  $typography: mat.get-typography-config($theme);
+
+  #header, #welcome , footer {
+    font-family: mat.font-family($typography);
+  }
+}
+

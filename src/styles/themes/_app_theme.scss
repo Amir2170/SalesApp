@@ -1,0 +1,32 @@
+@use "sass:map";
+@use "@angular/material" as mat;
+@use "home_theme" as home;
+
+
+@include mat.core();
+
+/* ********* DEFINING THEME ********* */
+
+// colors
+$primary: mat.define-palette(mat.$grey-palette);
+$accent: mat.define-palette(mat.$blue-palette);
+$warn: mat.define-palette(mat.$red-palette);
+
+// typography
+$typography: mat.define-typography-config(
+  $font-family: "Rubic"
+);
+
+$app-theme: mat.define-dark-theme((
+  color: (primary: $primary, accent: $accent, warn: $warn),
+  typography: $typography,
+));
+
+// including theme on all components
+@include mat.all-component-themes($app-theme);
+
+// specific colors to home
+@include home.color($app-theme);
+
+// custom typography on home theme
+@include home.typography($app-theme)
