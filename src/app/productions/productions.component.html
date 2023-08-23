@@ -190,6 +190,22 @@
       <td mat-cell *matCellDef="let production">{{production.warehouseId}}</td>
     </ng-container>
 
+    <!-- Edit button column -->
+    <ng-container matColumnDef="edit">
+      <th mat-header-cell *matHeaderCellDef>ویرایش</th>
+      <td mat-cell *matCellDef="let production">
+        <button mat-raised-button color="accent" (click)="showEditFormFunc(production.id)">ویرایش</button>
+      </td>
+    </ng-container>
+
+    <!-- Delete button column -->
+    <ng-container matColumnDef="delete">
+      <th mat-header-cell *matHeaderCellDef>حذف</th>
+      <td mat-cell *matCellDef="let production">
+        <button mat-raised-button color="warn" (click)="openDeleteDialog(production.id)">حذف</button>
+      </td>
+    </ng-container>
+
     <!-- Rows -->
     <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
     <tr mat-row *matRowDef="let row; columns: columnsToDisplay"></tr>

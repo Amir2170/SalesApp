@@ -13,6 +13,9 @@ import { HomeComponent } from './home/home.component';
 import { AppRoutingModule } from './routes/app-routing/app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 import { ProductionsComponent } from './productions/productions.component';
+import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "./productions/delete-dialog/delete-dialog.component";
+
 
 @NgModule({
   declarations: [
@@ -28,8 +31,12 @@ import { ProductionsComponent } from './productions/productions.component';
     BrowserAnimationsModule,
     MatButtonModule,
     MatTableModule,
+    MatDialogModule,
   ],
-  providers: [],
+  providers: [
+    // dialog text directions right to left
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {direction: 'rtl'}}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,7 +7,9 @@ import { Production } from "../models/production";
 import { ProductionsService } from "../services/productions/productions.service";
 import {triggerOpenCloseForm, triggerShowHideError} from "../../animations/animations";
 import {first} from "rxjs";
-
+import {MatDialog} from "@angular/material/dialog";
+import {DeleteDialogComponent} from "./delete-dialog/delete-dialog.component";
+import {DialogConfig} from "@angular/cdk/dialog";
 
 @Component({
   selector: 'app-productions',
@@ -21,7 +23,10 @@ import {first} from "rxjs";
 })
 export class ProductionsComponent implements OnInit {
   // columns to display in template
-  columnsToDisplay= ['id', 'title', 'strategicResource', 'code', 'warehouseId']
+  columnsToDisplay= [
+    'id', 'title', 'strategicResource',
+    'code', 'warehouseId', 'edit', 'delete'
+  ]
 
   // variable to use in showing or hiding production create form
   showCreateForm: boolean = false;
@@ -56,9 +61,10 @@ export class ProductionsComponent implements OnInit {
   // unsuccessful production creation
   unsuccessfulEdit: boolean = false;
 
-  // injecting service and router to extract id
+  // injecting service and dialogref
   constructor(
     private productionService: ProductionsService,
+    private dialog: MatDialog,
   ) {
   }
 
@@ -82,6 +88,18 @@ export class ProductionsComponent implements OnInit {
         Validators.required
       ]),
     });
+  }
+
+  /* ****************** DELETE DIALOG ************** */
+  // opening delete message dialog and deleting production if clicked yes
+  openDeleteDialog(id: number) {
+    const dialogref = this.dialog.open(DeleteDialogComponent);
+
+    dialogref.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteProduction(id);
+      }
+    })
   }
 
   // convenience getter for easy access to form fields
