@@ -72,22 +72,6 @@ export class ProductionsComponent implements OnInit {
    when landing on productions page */
   ngOnInit() {
     this.getProductions();
-
-    // production form group initialization
-    this.productionForm = new FormGroup({
-      title: new FormControl('',[
-        Validators.required,
-      ]),
-      strategicResource: new FormControl(0,[
-        Validators.required
-      ]),
-      code: new FormControl('',[
-        Validators.required
-      ]),
-      warehouseId: new FormControl(0,[
-        Validators.required
-      ]),
-    });
   }
 
   /* ****************** DELETE DIALOG ************** */
@@ -101,13 +85,6 @@ export class ProductionsComponent implements OnInit {
       }
     })
   }
-
-  // convenience getter for easy access to form fields
-  get formTitle() { return this.productionForm.get('title') };
-  get formcode() { return this.productionForm.get('code') };
-  get formstrategicResource() { return this.productionForm.get('strategicResource') };
-  get formWarehouseId() { return this.productionForm.get('warehouseId') };
-
   /* -------------------------------- helper functions ------------------------------ */
 
   /* setting toggling create customer form on click */
