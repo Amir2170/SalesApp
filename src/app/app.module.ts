@@ -14,6 +14,7 @@ import { AppRoutingModule } from './routes/app-routing/app-routing.module';
 import { HttpClientModule } from "@angular/common/http";
 import { ProductionsComponent } from './productions/productions.component';
 import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
+import {MAT_SNACK_BAR_DEFAULT_OPTIONS, MatSnackBarModule} from "@angular/material/snack-bar";
 
 
 @NgModule({
@@ -31,10 +32,13 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dia
     MatButtonModule,
     MatTableModule,
     MatDialogModule,
+    MatSnackBarModule,
   ],
   providers: [
     // dialog text directions right to left
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {direction: 'rtl'}}
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {direction: 'rtl'}},
+    {provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue:
+        {direction: 'rtl', duration: 3000, panelClass:'snackbar-center'}},
   ],
   bootstrap: [AppComponent]
 })

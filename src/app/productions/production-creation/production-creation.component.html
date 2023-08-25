@@ -1,1 +1,12 @@
-<p>production-creation works!</p>
+<h2 mat-dialog-title>محصول جدید</h2>
+<mat-dialog-content>
+  <!-- production creation from using reusable production from -->
+  <form [formGroup]="productionCreation">
+    <app-production-from formControlName="production"></app-production-from>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="accent" [disabled]="productionCreation.invalid" (click)="onYesClick()">ثبت</button>
+  <button mat-raised-button color="warn" (click)="onNoClick()">خروج</button>
+</mat-dialog-actions>
+

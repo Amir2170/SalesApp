@@ -6,15 +6,22 @@ import {
   FormBuilder,
   FormGroup,
   NG_VALIDATORS,
-  NG_VALUE_ACCESSOR, ValidationErrors, Validator,
+  NG_VALUE_ACCESSOR, ReactiveFormsModule, ValidationErrors, Validator,
   Validators
 } from "@angular/forms";
 import {Subject, takeUntil} from "rxjs";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
   selector: 'app-production-from',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './production-from.component.html',
   styleUrls: ['./production-from.component.scss'],
   providers: [
@@ -41,8 +48,8 @@ export class ProductionFromComponent implements ControlValueAccessor, OnDestroy,
   productionForm: FormGroup = this.formBuilder.group({
     title:['', Validators.required],
     strategicResource: ['', Validators.required],
-    code: [0, Validators.required],
-    warehouseId: [0, Validators.required],
+    code: ['', Validators.required],
+    warehouseId: ['', Validators.required],
   });
 
   // convenience getter for easy access to form fields
@@ -73,7 +80,7 @@ export class ProductionFromComponent implements ControlValueAccessor, OnDestroy,
 
   // propagates validation errors from nested production form to parent form control
   validate(control: AbstractControl): ValidationErrors | null {
-    return this.productionForm.valid ? null : { production: {valid: false} };
+    return this.productionForm.valid ? null : { valid: false };
   }
 
   // needed to unsubscribe from observables when production component is destroyed

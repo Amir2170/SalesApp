@@ -1,4 +1,4 @@
-import { Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import { FormControl, FormGroup } from "@angular/forms";
 import { Validators } from "@angular/forms";
 
@@ -6,10 +6,13 @@ import { Validators } from "@angular/forms";
 import { Production } from "../models/production";
 import { ProductionsService } from "../services/productions/productions.service";
 import {triggerOpenCloseForm, triggerShowHideError} from "../../animations/animations";
-import {first} from "rxjs";
+import {config, first} from "rxjs";
 import {MatDialog} from "@angular/material/dialog";
 import {DeleteDialogComponent} from "./delete-dialog/delete-dialog.component";
 import {DialogConfig} from "@angular/cdk/dialog";
+import {ProductionCreationComponent} from "./production-creation/production-creation.component";
+import {MatTable} from "@angular/material/table";
+import {MatSnackBar} from "@angular/material/snack-bar";
 
 @Component({
   selector: 'app-productions',
@@ -37,18 +40,6 @@ export class ProductionsComponent implements OnInit {
   // // variable to use in showing or hiding production edit form
   showEditForm: boolean = false;
 
-  // variable to pass error messages to view
-  errorMessage = '';
-
-  // unsuccessful production creation to indicate showing and hiding error
-  unsuccessfulCreation: boolean = false;
-
-  // successful production creation
-  successfulCreation: boolean = false;
-
-  // variable that indicates an item is deleted
-  isDeleted: boolean = false;
-
   // array of productions to use in views
   productions: Production[] = [];
 
@@ -61,10 +52,11 @@ export class ProductionsComponent implements OnInit {
   // unsuccessful production creation
   unsuccessfulEdit: boolean = false;
 
-  // injecting service and dialogref
+  // injecting service and dialogref and snackbar
   constructor(
     private productionService: ProductionsService,
     private dialog: MatDialog,
+    private snackbar: MatSnackBar,
   ) {
   }
 
@@ -82,57 +74,37 @@ export class ProductionsComponent implements OnInit {
     dialogref.afterClosed().subscribe(result => {
       if (result) {
         this.deleteProduction(id);
+        // show successful delete message in snackbar
+        this.snackbar.open('محصول مورد نظر با موفقیت حذف شد')
       }
     })
   }
-  /* -------------------------------- helper functions ------------------------------ */
 
-  /* setting toggling create customer form on click */
-  showCreateFormFunc() {
-    this.showEditForm = false;
-    this.showCreateForm = !this.showCreateForm;
+  /* ************************** PRODUCTION CREATION DIALOG FORM *********************** */
+  openCreationDialog() {
+    const dialogRef = this.dialog.open(ProductionCreationComponent);
 
-    // empty form if edition has been done before it
-    this.productionForm.patchValue({
-      title: '',
-      code: '',
-      strategicResource: 0,
-      warehouseId: 0,
-    });
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.productionService.createProductions({
+          title: result.title,
+          code: result.code,
+          strategicResource: result.strategicResource,
+          warehouseId: result.warehouseId
+        } as Production).subscribe((data) => {
+          this.getProductions();
+          // show backend errors in snackbar
+          if (data) {
+            this.snackbar.open(this.productionService.errorMessage);
+          } else {
+            // successful production creation
+            this.snackbar.open('محصول مورد نظر با موفقیت ثبت شد')
+          }
+        })
+      }
+    })
   }
 
-  /* setting toggling edit production form on click */
-  showEditFormFunc(id: number) {
-    // set editId to use in edit request
-    this.editId = id;
-
-    // close create form and populate edit form with production values
-    this.showCreateForm = false;
-    this.showEditForm= !this.showEditForm;
-    this.productionService.getProductionById(id)
-      .pipe(first())
-      .subscribe(
-        pro =>
-          this.productionForm.patchValue(pro)
-      )
-  }
-
-  /* hide all messages when button is clicked */
-  hideMessageFunc() {
-    this.unsuccessfulCreation = false;
-    this.successfulCreation = false;
-    this.unsuccessfulEdit = false;
-    this.successfulEdit = false;
-    this.isDeleted = false
-  }
-
-  // show and hide delete successful message
-  showIsDeletedMessage() {
-    // first show the message then hide it
-    this.isDeleted = true;
-  }
-
-  /* ------------------------------------------------------- */
 
   // get all productions from server and put them in productions array
   getProductions(): void {
@@ -141,77 +113,19 @@ export class ProductionsComponent implements OnInit {
         this.productions = productions
       );
   }
-
-  /* create a product and put backend related errors in errorMessage variable */
-  createProduction(): void {
-    // first check if form is valid
-    if (this.productionForm.valid) {
-      this.productionService.createProductions(
-        {
-          // title and code with no white space on either side
-          title: this.productionForm.get('title')?.value?.trim(),
-          code: this.productionForm.get('code')?.value?.trim(),
-          strategicResource: this.productionForm.get('strategicResource')?.value,
-          warehouseId: this.productionForm.get('warehouseId')?.value
-        } as Production
-      )
-        .subscribe(
-          (data) => {
-          // get all products
-          this.getProductions();
-
-          // data is error send from handle error function in service as Observable
-          if(data) {
-            // set appropriate variables in each case
-            // set just variable that indicates operation true all others false
-            this.successfulEdit = false;
-            this.unsuccessfulEdit = false;
-            this.isDeleted = false;
-            this.successfulCreation = false;
-            this.unsuccessfulCreation = true;
-            this.errorMessage = this.productionService.errorMessage;
-          } else {
-            this.isDeleted = false;
-            this.successfulEdit = false;
-            this.unsuccessfulEdit = false;
-            this.unsuccessfulCreation = false;
-            this.successfulCreation = true;
-            // clear error message
-            this.errorMessage = '';
-          }
-        });
-    } else {
-      // show this error in case form is invalid and error message is empty
-      this.errorMessage = "فرم ثبت نشد. از پر بودن فیلد ها اطمینان حاصل کنید و مجدد تلاش کنید";
-      this.unsuccessfulCreation = true;
-      this.unsuccessfulEdit = false;
-      this.successfulEdit = false;
-      this.successfulCreation = false;
-      this.isDeleted = false
-    }
-  }
-
   // DELETE productions/{{id}}
   // delete production with given id
   deleteProduction(id: number) {
     this.productionService.deleteProduction(id)
       .subscribe(() => {
         this.getProductions();
-
-        // show delete successful
-        this.isDeleted = true;
-
-        // set all other variables false to show this message
-        this.successfulCreation = false;
-        this.unsuccessfulCreation = false
-        this.successfulEdit = false;
-        this.unsuccessfulEdit = false;
       })
 
   }
 
   // PUT: productions/{{id}}
   // update a product with given id to product in request body
+  /*
   updateProduction() {
 
     if (this.productionForm.valid) {
@@ -257,5 +171,7 @@ export class ProductionsComponent implements OnInit {
       this.isDeleted = false
     }
   }
+
+   */
 }
 

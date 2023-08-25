@@ -1,1 +1,33 @@
-<p>production-from works!</p>
+<!-- Production From -->
+<div [formGroup]="productionForm" class="nested-form">
+  <mat-form-field>
+    <mat-label>نام محصول</mat-label>
+    <input matInput formControlName="title" required placeholder="نام محصول را وارد کنید">
+    <mat-error *ngIf="formTitle?.invalid && (formTitle?.touched || formTitle?.dirty)">
+      فیلد نام محصول اشتباه است
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>منبع استراتجیک</mat-label>
+    <input matInput type="number" formControlName="strategicResource" required placeholder="منبع استراتجیک  محصول را وارد کنید">
+    <mat-error
+      *ngIf="formstrategicResource?.invalid &&
+      (formstrategicResource?.touched || formstrategicResource?.dirty)">
+      فیلد منبع استراتجبک اشتباه است
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>کد محصول</mat-label>
+    <input matInput formControlName="code" required placeholder="کد محصول را وارد کنید">
+    <mat-error *ngIf="formcode?.invalid && (formcode?.touched || formcode?.dirty)">
+      فیلد کد محصول اشتباه است
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>کد انبار</mat-label>
+    <input matInput type="number" formControlName="warehouseId" required placeholder="کد انبار را وارد کنید">
+    <mat-error *ngIf="formWarehouseId?.invalid && (formWarehouseId?.touched || formWarehouseId?.dirty)">
+      فیلد کد انبار اشتباه است
+    </mat-error>
+  </mat-form-field>
+</div>
