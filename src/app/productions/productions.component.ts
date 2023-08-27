@@ -13,6 +13,7 @@ import {DialogConfig} from "@angular/cdk/dialog";
 import {ProductionCreationComponent} from "./production-creation/production-creation.component";
 import {MatTable} from "@angular/material/table";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ProductionEditionComponent} from "./production-edition/production-edition.component";
 
 @Component({
   selector: 'app-productions',
@@ -105,6 +106,44 @@ export class ProductionsComponent implements OnInit {
     })
   }
 
+  /* ************************** PRODUCTION EDITION DIALOG FORM *********************** */
+  openEditionDialog(id: number) {
+    var production: Production;
+    // get production according to id
+    this.productionService.getProductionById(id)
+      .subscribe(result => {
+        production = result;
+
+        // open dialog
+        const dialogRef = this.dialog.open(ProductionEditionComponent, {
+          data: production,
+        });
+
+        // send PUT request using dialog info to server and show errors if there is any
+        // SUPPLYING ID IS NECESSARY TO AVOID BACKEND ERRORS
+        dialogRef.afterClosed().subscribe(result => {
+          if(result) {
+            this.productionService.updateProduction(id, {
+              id: id,
+              title: result.title,
+              code: result.code,
+              strategicResource: result.strategicResource,
+              warehouseId: result.warehouseId
+            } as Production)
+              .subscribe(data => {
+                // update productions
+                this.getProductions();
+
+                if(data) {
+                  this.snackbar.open(this.productionService.errorMessage);
+                } else {
+                  this.snackbar.open("ویرایش محصول با موفقیت انجام شد");
+                }
+              })
+          }
+        })
+      });
+  }
 
   // get all productions from server and put them in productions array
   getProductions(): void {
@@ -122,56 +161,5 @@ export class ProductionsComponent implements OnInit {
       })
 
   }
-
-  // PUT: productions/{{id}}
-  // update a product with given id to product in request body
-  /*
-  updateProduction() {
-
-    if (this.productionForm.valid) {
-      this.productionService.updateProduction(this.editId, {
-        // title and code with no white space on either side
-        title: this.productionForm.get('title')?.value?.trim(),
-        code: this.productionForm.get('code')?.value?.trim(),
-        strategicResource: this.productionForm.get('strategicResource')?.value,
-        warehouseId: this.productionForm.get('warehouseId')?.value,
-        id: this.editId
-      } as Production)
-        .subscribe( (data) => {
-          // get all products
-          this.getProductions();
-
-          // data is error send from handle error function in service as Observable
-          if(data) {
-            // set appropriate variables in each case
-            // set just variable that indicates operation true all others false
-            this.isDeleted = false;
-            this.successfulCreation = false;
-            this.unsuccessfulCreation = false;
-            this.unsuccessfulEdit = true;
-            this.successfulEdit = false;
-            this.errorMessage = this.productionService.errorMessage;
-          } else {
-            this.successfulEdit = true;
-            this.unsuccessfulEdit = false;
-            this.isDeleted = false;
-            this.unsuccessfulCreation = false;
-            this.successfulCreation = false;
-            // clear error message
-            this.errorMessage = '';
-          }
-        });
-    } else {
-      // show this error in case form is invalid and error message is empty
-      this.errorMessage = "فرم ثبت نشد. از پر بودن فیلد ها اطمینان حاصل کنید و مجدد تلاش کنید";
-      this.unsuccessfulCreation = false;
-      this.unsuccessfulEdit = true;
-      this.successfulEdit = false;
-      this.successfulCreation = false;
-      this.isDeleted = false
-    }
-  }
-
-   */
 }
 

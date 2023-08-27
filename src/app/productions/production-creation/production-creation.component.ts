@@ -44,7 +44,7 @@ export class ProductionCreationComponent {
     this.dialogRef.close(false);
   }
 
-  // when user clicks yes close the dialog and send true to main production component
+  // when user clicks yes close the dialog and send info to main production component
   onYesClick() {
     // validation has been done on template side and locked submit button
     return this.dialogRef.close(this.productionCreation.get('production')?.value)

@@ -1,0 +1,10 @@
+<h2 mat-dialog-title>ویرایش محصول</h2>
+<mat-dialog-content>
+  <form [formGroup]="productionEdition">
+    <app-production-from formControlName="production"></app-production-from>
+  </form>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-raised-button color="accent" [disabled]="productionEdition.invalid" (click)="onYesClick()">ثبت</button>
+  <button mat-raised-button color="warn" (click)="onNoClick()">خروج</button>
+</mat-dialog-actions>
