@@ -1,12 +1,13 @@
 ﻿#welcome {
   direction: rtl;
   width: 100%;
-  height: 85vh;
+  height: 84.5vh;
   background: url("/../assets/building.jpg") top center;
 }
 
 #welcome h1, #welcome h3 {
   text-align: center;
   font-family: inherit;
+  overflow-y: hidden;
 }
 

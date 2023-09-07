@@ -24,10 +24,12 @@
     </mat-error>
   </mat-form-field>
   <mat-form-field>
-    <mat-label>کد انبار</mat-label>
-    <input matInput type="number" formControlName="warehouseId" required placeholder="کد انبار را وارد کنید">
-    <mat-error *ngIf="formWarehouseId?.invalid && (formWarehouseId?.touched || formWarehouseId?.dirty)">
-      فیلد کد انبار اشتباه است
+    <mat-label>انبار</mat-label>
+    <mat-select formControlName="warehouseId" required placeholder="انبار را انتخاب کنید" >
+      <mat-option *ngFor="let warehouse of warehouses" [value]="warehouse.id">{{ warehouse.title }}</mat-option>
+    </mat-select>
+    <mat-error *ngIf="formWarehouseId?.hasError('required')">
+      لطفا یک انبار را انتخاب کنید
     </mat-error>
   </mat-form-field>
 </div>

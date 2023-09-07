@@ -25,3 +25,8 @@
 <main>
   <router-outlet></router-outlet>
 </main>
+<!-- progress spinner putting it out of main in order for animations to work -->
+<ng-container *ngIf="loading$ | async">
+  <div class="overlay"></div>
+  <mat-progress-spinner mode="indeterminate" class="spinner" *ngIf="loading$ | async"></mat-progress-spinner>
+</ng-container>

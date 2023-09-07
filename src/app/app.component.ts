@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import {LoadingService} from "./services/loading/loading.service";
 
 
 @Component({
@@ -18,4 +19,10 @@ export class AppComponent {
   selectNavItem(num: number) {
     this.clicked = num;
   }
+
+  // injecting loading service to access the observable in view
+  constructor(private loader: LoadingService) {}
+
+  // accessing observable from service
+  loading$ = this.loader.loading$;
 }

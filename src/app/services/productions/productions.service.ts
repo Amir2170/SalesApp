@@ -5,7 +5,6 @@ import { catchError, map } from "rxjs";
 
 // local imports
 import { Production } from "../../models/production";
-import {error} from "@angular/compiler-cli/src/transformers/util";
 
 @Injectable({
   providedIn: 'root'

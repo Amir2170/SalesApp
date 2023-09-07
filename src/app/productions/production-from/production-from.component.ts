@@ -1,4 +1,4 @@
-import {Component, forwardRef, OnDestroy} from '@angular/core';
+import {Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   AbstractControl,
@@ -12,6 +12,9 @@ import {
 import {Subject, takeUntil} from "rxjs";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {WarehousesService} from "../../services/warehouses/warehouses.service";
+import {Warehouse} from "../../models/warehouse";
 
 @Component({
   selector: 'app-production-from',
@@ -21,6 +24,7 @@ import {MatInputModule} from "@angular/material/input";
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './production-from.component.html',
   styleUrls: ['./production-from.component.scss'],
@@ -37,11 +41,22 @@ import {MatInputModule} from "@angular/material/input";
     }
   ],
 })
-export class ProductionFromComponent implements ControlValueAccessor, OnDestroy, Validator{
+export class ProductionFromComponent implements ControlValueAccessor, OnDestroy, Validator, OnInit{
+
+  // variable containing all warehouses
+  warehouses: Warehouse[] = [];
 
   destroySubject = new Subject<void>();
 
-  constructor(private formBuilder: FormBuilder) {
+  // injecting warehouse service and formBuilder
+  constructor(
+    private formBuilder: FormBuilder,
+    private warehousesService: WarehousesService,
+  ) {
+  }
+
+  ngOnInit() {
+    this.getWarehouses();
   }
 
   // production form group
@@ -57,6 +72,14 @@ export class ProductionFromComponent implements ControlValueAccessor, OnDestroy,
   get formcode() { return this.productionForm.get('code') };
   get formstrategicResource() { return this.productionForm.get('strategicResource') };
   get formWarehouseId() { return this.productionForm.get('warehouseId') };
+
+  // get all warehouses and set warehouses variable USED IN VIEW
+  getWarehouses() {
+    this.warehousesService.getWarehouses()
+      .subscribe(result => {
+        this.warehouses = result;
+      });
+  }
 
   // propagates value changes to parent form control when nested production form changes
   registerOnChange(fn: any) {

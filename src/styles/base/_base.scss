@@ -1,4 +1,4 @@
-﻿* {
+﻿main, header {
   direction: rtl;
 }
 
@@ -9,6 +9,5 @@ table {
 
 body {
   background-color: $colour-background;
-  overflow-y: scroll;
   position: relative;
 }
